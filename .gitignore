@@ -41,3 +41,10 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.exe
+.vs/OpenGLExperiments/v14/.suo
+*.ilk
+OpenGLExperiments.sdf
+*.sln
+OpenGLExperiments.v12.suo
+*.log
