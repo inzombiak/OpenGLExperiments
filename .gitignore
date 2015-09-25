@@ -48,3 +48,11 @@ OpenGLExperiments.sdf
 *.sln
 OpenGLExperiments.v12.suo
 *.log
+Debug/OpenGLExperiments.pdb
+*.obj
+*.idb
+*.lastbuildstate
+OpenGLExperiments/Debug/OpenGLEx.EC6E51ED.tlog/link.read.1.tlog
+*.tlog
+OpenGLExperiments/Debug/vc120.pdb
+*.opensdf
