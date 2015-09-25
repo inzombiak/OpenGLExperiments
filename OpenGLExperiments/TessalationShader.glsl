@@ -1,7 +1,7 @@
 #version 410 core
 layout(vertices = 3) out;
 
-in vec4 vs_color[];
+in vec4 _color[];
 patch out vec4 patch_color;
 
 void main(void)
@@ -14,5 +14,5 @@ void main(void)
 		gl_TessLevelOuter[2] = 5.0;
 	}
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
-	patch_color = vs_color[gl_InvocationID];
+	patch_color = _color[gl_InvocationID];
 }

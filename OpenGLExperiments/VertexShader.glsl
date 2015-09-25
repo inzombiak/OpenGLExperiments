@@ -5,7 +5,7 @@ layout(location = 0) in vec4 offset;
 layout(location = 1) in vec4 color;
 
 
-out vec4 vs_color;
+out vec4 _color;
 
 void main(void)
 {
@@ -15,5 +15,5 @@ void main(void)
 	// Add "offset" to our hard-coded vertex position
 	gl_Position = vertices[gl_VertexID] + offset;
 
-	vs_color = color;
+	_color = color;
 }
