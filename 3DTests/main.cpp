@@ -15,10 +15,16 @@
 
 GLuint theProgram;
 std::vector<GLuint> shaderList;
-const float vertexPositions[] = {
+const GLfloat triVerticies[] = {
 	0.75f, 0.75f, 0.0f, 1.0f,
 	0.75f, -0.75f, 0.0f, 1.0f,
 	-0.75f, -0.75f, 0.0f, 1.0f,
+};
+
+const GLfloat triColors[] = {
+	0.583f, 0.771f, 0.014f,
+	0.609f, 0.115f, 0.436f,
+	0.327f, 0.483f, 0.844f,
 };
 
 
@@ -63,7 +69,7 @@ static const GLfloat cubeVerticies[] =
 };
 
 // One color for each vertex. They were generated randomly.
-static const GLfloat g_color_buffer_data[] = 
+static const GLfloat cubeColor[] = 
 {
 	0.583f, 0.771f, 0.014f,
 	0.609f, 0.115f, 0.436f,
@@ -102,13 +108,15 @@ static const GLfloat g_color_buffer_data[] =
 	0.820f, 0.883f, 0.371f,
 	0.982f, 0.099f, 0.879f
 };
-GLuint positionBufferObject;
-GLuint colorBuffferObject;
+
 GLuint vao;
 
 int m_x = 0, m_y = 0, m_mouseClickX, m_mouseClickY;
 float m_yRotate = 0.f, m_xRotate = 0.f;
 bool mouseDown = false;
+
+RenderObject* obj;
+RenderObject* obj2;
 
 glm::mat4 model;
 
@@ -204,15 +212,6 @@ void InitializeProgram()
 
 void InitializeVertexBuffer()
 {
-	glGenBuffers(1, &positionBufferObject);
-
-	glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVerticies), cubeVerticies, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glGenBuffers(1, &colorBuffferObject);
-	glBindBuffer(GL_ARRAY_BUFFER, colorBuffferObject);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(g_color_buffer_data), g_color_buffer_data, GL_STATIC_DRAW);
 
 }
 
@@ -221,6 +220,14 @@ void init()
 {
 	InitializeProgram();
 	InitializeVertexBuffer();
+
+	std::vector<GLfloat> vertex(std::begin(cubeVerticies), std::end(cubeVerticies));
+	std::vector<GLfloat> colors(std::begin(cubeColor), std::end(cubeColor));
+	obj = new RenderObject(vertex, colors, theProgram);
+
+	vertex.assign(std::begin(triVerticies), std::end(triVerticies));
+	colors.assign(std::begin(triColors), std::end(triColors));
+	obj2 = new RenderObject(vertex, colors, theProgram);
 
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -269,52 +276,25 @@ void display()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	//Model-view-projection matrixid
-	GLuint MVPMatID = glGetUniformLocation(theProgram, "MVP");
-
 	glm::mat4 projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
 	glm::mat4 view = glm::lookAt(
-		glm::vec3(0, 3, 10),
-		glm::vec3(m_x, m_y, 0),
+		glm::vec3(4, 3, 10),
+		glm::vec3(0, 0, 0),
 		glm::vec3(0, 1, 0)
 		);
 
-	
-	model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-	model = glm::rotate(model, -m_yRotate, glm::vec3(1.0f, 0.0f, 0.0f));
-	model = glm::rotate(model, -m_xRotate,glm::vec3(0.0f, 1.0f, 0.0f));
+	obj->draw(projection * view);
 
-	glm::mat4 MVP = projection * view * model;
+	projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
-	glUseProgram(theProgram);
-
-	glUniformMatrix4fv(MVPMatID, 1, GL_FALSE, &MVP[0][0]);
-	glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
-
-	glVertexAttribPointer(
-		0,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		0,
-		(void*)0
+	view = glm::lookAt(
+		glm::vec3(2, 2, 0),
+		glm::vec3(0, 0, 0),
+		glm::vec3(0, 1, 0)
 		);
-	glEnableVertexAttribArray(0);
 
-
-	glBindBuffer(GL_ARRAY_BUFFER, colorBuffferObject);
-	glVertexAttribPointer(
-		1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-		3,                                // size
-		GL_FLOAT,                         // type
-		GL_FALSE,                         // normalized?
-		0,                                // stride
-		(void*)0                          // array buffer offset
-		);
-	glEnableVertexAttribArray(1);
-	glDrawArrays(GL_TRIANGLES, 0, 12*3);
-
+	//obj2->draw(projection * view);
 	glutSwapBuffers();
 }
 
