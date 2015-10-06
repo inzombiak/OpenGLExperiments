@@ -84,6 +84,8 @@
     <ClCompile Include="RenderObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\OpenGLExperiments\TextureShader.glsl" />
+    <None Include="..\OpenGLExperiments\TextureVertexShader.glsl" />
     <None Include="FragmentShader.glsl" />
     <None Include="VertexShader.glsl" />
   </ItemGroup>

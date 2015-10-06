@@ -14,6 +14,7 @@
 #include <algorithm>
 
 GLuint theProgram;
+GLuint textureProgram;
 std::vector<GLuint> shaderList;
 const GLfloat triVerticies[] = {
 	0.75f, 0.75f, 0.0f, 1.0f,
@@ -107,6 +108,45 @@ static const GLfloat cubeColor[] =
 	0.673f, 0.211f, 0.457f,
 	0.820f, 0.883f, 0.371f,
 	0.982f, 0.099f, 0.879f
+};
+
+static const GLfloat cubeTextureUV[] = {
+	0.000059f, 1.0f - 0.000004f,
+	0.000103f, 1.0f - 0.336048f,
+	0.335973f, 1.0f - 0.335903f,
+	1.000023f, 1.0f - 0.000013f,
+	0.667979f, 1.0f - 0.335851f,
+	0.999958f, 1.0f - 0.336064f,
+	0.667979f, 1.0f - 0.335851f,
+	0.336024f, 1.0f - 0.671877f,
+	0.667969f, 1.0f - 0.671889f,
+	1.000023f, 1.0f - 0.000013f,
+	0.668104f, 1.0f - 0.000013f,
+	0.667979f, 1.0f - 0.335851f,
+	0.000059f, 1.0f - 0.000004f,
+	0.335973f, 1.0f - 0.335903f,
+	0.336098f, 1.0f - 0.000071f,
+	0.667979f, 1.0f - 0.335851f,
+	0.335973f, 1.0f - 0.335903f,
+	0.336024f, 1.0f - 0.671877f,
+	1.000004f, 1.0f - 0.671847f,
+	0.999958f, 1.0f - 0.336064f,
+	0.667979f, 1.0f - 0.335851f,
+	0.668104f, 1.0f - 0.000013f,
+	0.335973f, 1.0f - 0.335903f,
+	0.667979f, 1.0f - 0.335851f,
+	0.335973f, 1.0f - 0.335903f,
+	0.668104f, 1.0f - 0.000013f,
+	0.336098f, 1.0f - 0.000071f,
+	0.000103f, 1.0f - 0.336048f,
+	0.000004f, 1.0f - 0.671870f,
+	0.336024f, 1.0f - 0.671877f,
+	0.000103f, 1.0f - 0.336048f,
+	0.336024f, 1.0f - 0.671877f,
+	0.335973f, 1.0f - 0.335903f,
+	0.667969f, 1.0f - 0.671889f,
+	1.000004f, 1.0f - 0.671847f,
+	0.667979f, 1.0f - 0.335851f
 };
 
 GLuint vao;
@@ -208,6 +248,12 @@ void InitializeProgram()
 	theProgram = CreateProgram(shaderList);
 
 	std::for_each(shaderList.begin(), shaderList.end(), glDeleteShader);
+
+	shaderList.push_back(CreateShader(GL_VERTEX_SHADER, ReadFileToString("TextureVertexShader.glsl")));
+	shaderList.push_back(CreateShader(GL_FRAGMENT_SHADER, ReadFileToString("TextureShader.glsl")));
+	textureProgram = CreateProgram(shaderList);
+
+	std::for_each(shaderList.begin(), shaderList.end(), glDeleteShader);
 }
 
 void InitializeVertexBuffer()
@@ -222,8 +268,8 @@ void init()
 	InitializeVertexBuffer();
 
 	std::vector<GLfloat> vertex(std::begin(cubeVerticies), std::end(cubeVerticies));
-	std::vector<GLfloat> colors(std::begin(cubeColor), std::end(cubeColor));
-	obj = new RenderObject(vertex, colors, theProgram);
+	std::vector<GLfloat> colors(std::begin(cubeTextureUV), std::end(cubeTextureUV));
+	obj = new RenderObject(vertex, "textureTest.bmp",colors, textureProgram);
 
 	vertex.assign(std::begin(triVerticies), std::end(triVerticies));
 	colors.assign(std::begin(triColors), std::end(triColors));
@@ -279,8 +325,8 @@ void display()
 	glm::mat4 projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
 	glm::mat4 view = glm::lookAt(
-		glm::vec3(4, 3, 10),
-		glm::vec3(0, 0, 0),
+		glm::vec3(4, m_xRotate, 10),
+		glm::vec3(-m_x, m_y, 0),
 		glm::vec3(0, 1, 0)
 		);
 
@@ -290,11 +336,11 @@ void display()
 
 	view = glm::lookAt(
 		glm::vec3(2, 2, 0),
-		glm::vec3(0, 0, 0),
+		glm::vec3(-m_x, m_y, 0),
 		glm::vec3(0, 1, 0)
 		);
 
-	//obj2->draw(projection * view);
+	obj2->draw(projection * view);
 	glutSwapBuffers();
 }
 
@@ -323,11 +369,11 @@ void mouse(int button, int state, int x, int y)
 
 void drag(int x, int y)
 {
-	//m_xRotate = std::fmod((m_xRotate + (m_mouseClickX - x) % 360)/10, 360);
-	//m_yRotate = std::fmod((m_yRotate + (m_mouseClickY - y) % 360)/10, 360);
+	m_xRotate = std::fmod((m_xRotate + (m_mouseClickX - x) % 360)/10, 360);
+	m_yRotate = std::fmod((m_yRotate + (m_mouseClickY - y) % 360)/10, 360);
 
-	m_xRotate = (float)(m_mouseClickX - x) /(float) 10;
-	m_yRotate = (float)(m_mouseClickY - y) / (float)10;
+	//m_xRotate = (float)(m_mouseClickX - x) /(float) 10;
+	//m_yRotate = (float)(m_mouseClickY - y) / (float)10;
 
 	std::cout << "x rotation: " << m_xRotate << "y rotate:" << m_yRotate << std::endl;
 	

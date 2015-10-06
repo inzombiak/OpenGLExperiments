@@ -32,6 +32,12 @@
     <None Include="FragmentShader.glsl">
       <Filter>Header Files\Resource Files\Shaders</Filter>
     </None>
+    <None Include="..\OpenGLExperiments\TextureVertexShader.glsl">
+      <Filter>Header Files\Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\OpenGLExperiments\TextureShader.glsl">
+      <Filter>Header Files\Resource Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderObject.h">
