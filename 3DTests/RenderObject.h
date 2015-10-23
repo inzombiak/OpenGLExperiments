@@ -8,18 +8,38 @@
 class RenderObject
 {
 public:
-	RenderObject(std::vector<GLfloat> points, std::vector<GLfloat> color, GLuint program);
-	RenderObject(std::vector<GLfloat> points, std::string texturePath, std::vector<GLfloat> UVVec, GLuint program);
-	void draw(glm::mat4& VPmatrix);
+	RenderObject(GLuint program);
+	//bool InitWithColor(std::vector<GLfloat> color);
+	bool InitWithOBJ(std::string filepath);
+
+	void SetSpecularTex(GLuint texID);
+	void SetNormalTex(GLuint texID);
+	void SetDiffuseTex(GLuint texID);
+
+	bool SetUV(std::vector<GLfloat> UVcoordinates);
+	bool SetVerticies(std::vector<GLfloat> vertexCoords);
+
+	void draw(glm::mat4& Vmatrix, glm::mat4& Pmatrix);
 
 private:
-	void drawTextured(glm::mat4& VPmatrix);
-	bool m_isTextured = false;
-	std::vector<float> m_points;
-	std::vector<float> m_color;
+	std::vector<glm::vec3> m_vertices;
+	std::vector<glm::vec2> m_uvs;
+	std::vector<glm::vec3> m_normals;
+	std::vector<glm::vec3> m_tangents;
+	std::vector<glm::vec3> m_bitangents;
+	std::vector<unsigned short> m_indices;
+
 	GLuint m_program;
-	GLuint m_positionBufferObject;
-	GLuint m_colorBufferObject;
-	GLuint m_textureID;
+	GLuint m_vertexBufferObject;
+	GLuint m_uvBufferObject;
+	GLuint m_normalBufferObject;
+	GLuint m_tangentBufferObject;
+	GLuint m_bitangentBufferObject;
+	GLuint m_indexBufferObject;
+
+	GLuint m_diffuseTextureID;
+	GLuint m_specularTextureID;
+	GLuint m_normalTextureID;
+	
 };
 

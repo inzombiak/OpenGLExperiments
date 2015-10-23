@@ -24,6 +24,9 @@
     <ClCompile Include="RenderObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HelperFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexShader.glsl">
@@ -32,15 +35,24 @@
     <None Include="FragmentShader.glsl">
       <Filter>Header Files\Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\OpenGLExperiments\TextureVertexShader.glsl">
+    <None Include="TextureVertexShader.glsl">
       <Filter>Header Files\Resource Files\Shaders</Filter>
     </None>
-    <None Include="..\OpenGLExperiments\TextureShader.glsl">
+    <None Include="NormalVertexShader.glsl">
+      <Filter>Header Files\Resource Files\Shaders</Filter>
+    </None>
+    <None Include="TextureFragmentShader.glsl">
+      <Filter>Header Files\Resource Files\Shaders</Filter>
+    </None>
+    <None Include="NormalFragmentShader.glsl">
       <Filter>Header Files\Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RenderObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HelperFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

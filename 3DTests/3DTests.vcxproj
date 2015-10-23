@@ -80,16 +80,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="HelperFunctions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderObject.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\OpenGLExperiments\TextureShader.glsl" />
-    <None Include="..\OpenGLExperiments\TextureVertexShader.glsl" />
     <None Include="FragmentShader.glsl" />
+    <None Include="NormalFragmentShader.glsl" />
+    <None Include="NormalVertexShader.glsl" />
+    <None Include="TextureFragmentShader.glsl" />
+    <None Include="TextureVertexShader.glsl" />
     <None Include="VertexShader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HelperFunctions.h" />
     <ClInclude Include="RenderObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
